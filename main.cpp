@@ -1,11 +1,15 @@
-#include "mainwindow.hpp"
+#include "widget.hpp"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow window;
+    QApplication app(argc, argv);
+    Widget window;
+
+    window.resize(350, 150);
+    window.setWindowTitle("Lab Helper");
+
     window.show();
-    return a.exec();
+    return app.exec();
 }
