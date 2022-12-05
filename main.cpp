@@ -1,15 +1,20 @@
-#include "widget.hpp"
+#include "mainwindow.hpp"
 
 #include <QApplication>
+#include <locale>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    Widget window;
+//    std::locale::global("eng");
+    std::locale lcl; // создает копию текущей глобальной локали
+    const auto & facet = std::use_facet<std::numpunct<char>>(lcl);
+    std::cout << facet.decimal_point() << std::endl; // печатает точку!
 
-    window.resize(350, 150);
-    window.setWindowTitle("Lab Helper");
+    QApplication a(argc, argv);
+    MainWindow w;
 
-    window.show();
-    return app.exec();
+    w.resize(800, 600);
+    w.show();
+
+    return a.exec();
 }
