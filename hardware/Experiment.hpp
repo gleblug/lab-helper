@@ -41,7 +41,7 @@ public:
 
         std::cout << "Freq,\tAmpl" << std::endl;
 
-        for (size_t f = 1400; f < 1800; f += 5)
+        for (size_t f = 1400; f < 1800; f += 2)
         {
             gen.set_frequency(f);
             double fr = 0;
@@ -51,7 +51,8 @@ public:
 
             try
             {
-                fr = osc.get_parameter_value("FREQ", "Hz");
+                fr = f;
+//                fr = osc.get_parameter_value("FREQ", "Hz");
                 am = osc.get_parameter_value("PKPK", "V");
             }
             catch(const std::exception& e)

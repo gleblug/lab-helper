@@ -102,7 +102,7 @@ void MainWindow::resonanceCurve()
     customPlot->yAxis->setLabel("Amplitude, V");
     // set axes ranges, so we see all data:
     customPlot->xAxis->setRange(1400, 1800);
-    customPlot->yAxis->setRange(0, 3);
+    customPlot->yAxis->setRange(0, 2.5);
     customPlot->replot();
 
     startBtn->setEnabled(true);
