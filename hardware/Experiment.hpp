@@ -13,7 +13,9 @@
 class Experiment
 {
 public:
-    Experiment()
+    Experiment(Generator &generator, Oscilloscope &oscilloscope) :
+        gen(generator),
+        osc(oscilloscope)
     {
         std::cout << osc.query("*IDN?") << std::endl;
         std::cout << osc.query("*IDN?") << std::endl;
@@ -32,28 +34,47 @@ public:
         usleep(5e6);
     }
 
-    auto resonance_curve()
+    auto frequency_response(double fmin, double fmax, double step)
     {
         std::cerr << "Start experiment..." << std::endl;
 
         std::vector<double> freq;
         std::vector<double> ampl;
 
-        std::cout << "Freq,\tAmpl" << std::endl;
+        osc.set_vdiv(10);
 
-        for (size_t f = 1400; f < 1800; f += 2)
+        std::cerr << fmin << " " << fmax << " " << step << std::endl;
+
+        for (double f = fmin; f < fmax; f += step)
         {
             gen.set_frequency(f);
             double fr = 0;
             double am = 0;
 
-            usleep(0.1e6);
+            usleep(0.5e6);
 
             try
             {
+                bool goodMeasurement = false;
+
+                while (!goodMeasurement)
+                {
+                    am = osc.get_parameter_value("AMPL", "V");
+                    double vdiv = osc.get_vdiv();
+
+                    std::cout << vdiv << std::endl;
+
+                    if (am < vdiv * 2)
+                        osc.set_vdiv(am / 4.0f);
+                    else if (am > vdiv * 6)
+                        osc.set_vdiv(am / 4.0f);
+                    else
+                        goodMeasurement = true;
+                }
                 fr = f;
 //                fr = osc.get_parameter_value("FREQ", "Hz");
-                am = osc.get_parameter_value("PKPK", "V");
+
+                std::cout << "Measure" << std::endl;
             }
             catch(const std::exception& e)
             {

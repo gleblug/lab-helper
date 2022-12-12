@@ -49,6 +49,33 @@ public:
         m_channel = "C" + std::to_string(static_cast<ind_t>(ch));
     }
 
+    void set_vdiv(double value)
+    {
+        if ((value < 500e-6) || (10 < value))
+            throw std::runtime_error("Trying to set invalid vdiv value!");
+        
+        std::string value_str;
+        std::string units;
+
+        if (value < 1e-3)
+        {
+            value_str = std::to_string(static_cast<int>(value * 1e6));
+            units = "uV";
+        }
+        else if (value < 1)
+        {
+            value_str = std::to_string(static_cast<int>(value * 1e3));
+            units = "mV";
+        }
+        else
+        {
+            value_str = std::to_string(static_cast<int>(value));
+            units = "V";
+        }
+
+        command(m_channel + ":VDIV " + value_str + units);
+    }
+
     void set_memory_size(MSIZ size);
 
     void set_parameter_custom(std::string param)
