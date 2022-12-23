@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QComboBox>
+#include <QGridLayout>
 
 #include <qcustomplot.h>
 
@@ -18,12 +19,27 @@ public:
     ~MainWindow();
 
 private slots:
-    void resonanceCurve();
+    void startExperiment();
+    void connectGenerator();
+    void connectOscilloscope();
+
+    void whichExperimentChanged();
+    void enableToStart();
 
 private:
-    Experiment exp;
-    QPushButton *startBtn;
-    QComboBox *whichExperimentCb;
+    Experiment *exp;
+    Generator *gen;
+    Oscilloscope *osc;
+
+    QVector<double> resonanceResponseParam;
+
     QCustomPlot *customPlot;
+    QComboBox *whichExperimentCb;
+    int whichExperiment;
+
+    QPushButton *startBtn;
+
+    QPushButton *connectOscBtn;
+    QPushButton *connectGenBtn;
 };
 #endif // MAINWINDOW_HPP
